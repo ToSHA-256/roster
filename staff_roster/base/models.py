@@ -37,22 +37,24 @@ class Sector(models.Model):
 
 
 class Employee(models.Model):
-    name = models.CharField(max_length=100)
-    management = models.ForeignKey(
-        Management,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-    )
-    department = models.ForeignKey(
-        Department,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-    )
-    sector = models.ForeignKey(
-        Sector,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-    )
+    GENDER_CHOICES = [
+        ('M', 'Мужской'),
+        ('F', 'Женский'),
+    ]
+    STATUS_CHOICES = [
+        ('military', 'Военнослужащий'),
+        ('civil', 'Госслужащий'),
+    ]
+    surname = models.CharField(max_length=100,default=None)
+    name = models.CharField(max_length=100,default=None)
+    patronymic = models.CharField(max_length=100,default=None)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='military')
+    date_of_birth = models.DateField(default='2000-01-01')
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default='M')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='employees',default=None)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name='employees',default=None)
+    management = models.ForeignKey(Management, on_delete=models.CASCADE, related_name='employees',default=None)
+
+    def __str__(self):
+        initials = f'{self.surname} {self.name[0]}.{self.patronymic[0]}.'
+        return initials
