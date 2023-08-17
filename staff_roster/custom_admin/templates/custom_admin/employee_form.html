@@ -9,63 +9,99 @@
     <title>Employee Form</title>
     <link rel="stylesheet" href="{% static 'dist/scss/wrapper-form.css'%}">
     <link rel="stylesheet" href="{% static 'dist/scss/body.css'%}">
+    <link rel="stylesheet" href="{% static 'dist/scss/style.css'%}">
 </head>
 <body>
 {% block content %}
-  <div id="employee-form">
-    <form method="POST">
-      {% csrf_token %}
-      <label for="id_management">Управление:</label>
-      {{ form.management }}
-      <label for="id_department">Отдел:</label>
-      {{ form.department }}
-      <label for="id_sector">Сектор:</label>
-      {{ form.sector }}
-      <button type="submit">Добавить сотрудника</button>
-    </form>
+ <div class="courses-filter-wrapper">
+    <div id="employee-form">
+      <form method="POST">
+        {% csrf_token %}
+        <select class="form__input" id="id_management" name="management">
+          <option value="" selected disabled>Выберите управление</option>
+           {% for management in management_choices %}
+            <option value="{{ management.id }}">{{ management }}</option>
+            {% endfor %}
+        </select>
+
+        <select class="form__input" id="id_department" name="department">
+          <option value="" selected disabled>Выберите отдел</option>
+        </select>
+
+        <select class="form__input" id="id_sector" name="sector">
+          <option value="" selected disabled>Выберите сектор</option>
+        </select>
+
+        <button type="submit" class="btn">Добавить сотрудника</button>
+      </form>
+    </div>
   </div>
     <script src="{% static 'dist/js/jquery-3.7.0.min.js' %}"></script>
 
   <script>
    $(document).ready(function() {
-  $("#id_management").change(function() {
-    var managementId = $(this).val();
-    $.ajax({
-      url: "{% url 'get_departments' %}",
-      data: { management_id: managementId },
-      success: function(data) {
+      function updateDepartmentSelect(departments) {
         var departmentSelect = $("#id_department");
-        departmentSelect.empty();  // Очищаем поле выбора отдела
-        data.forEach(function(dep) {
+        departmentSelect.empty();
+        departmentSelect.append($('<option>', {
+          value: "",
+          text: "Выберите отдел",
+          selected: true,
+          disabled: true
+        }));
+        departments.forEach(function(dep) {
           departmentSelect.append($('<option>', {
             value: dep.id,
-            text: dep.name
+            text: dep.name + " отдел"
           }));
         });
       }
-    });
-  });
 
-  $("#id_department").change(function() {
-    var departmentId = $(this).val();
-    $.ajax({
-      url: "{% url 'get_sectors' %}",
-      data: { department_id: departmentId },
-      success: function(data) {
+      function updateSectorSelect(sectors) {
         var sectorSelect = $("#id_sector");
-        sectorSelect.empty();  // Очищаем поле выбора сектора
-        data.forEach(function(sec) {
+        sectorSelect.empty();
+        sectorSelect.append($('<option>', {
+          value: "",
+          text: "Выберите сектор",
+          selected: true,
+          disabled: true
+        }));
+        sectors.forEach(function(sec) {
           sectorSelect.append($('<option>', {
             value: sec.id,
-            text: sec.name
+            text: sec.name + " сектор"
           }));
         });
       }
-    });
-  });
-});
 
-  </script>
+      $("#id_management").change(function() {
+        var managementId = $(this).val();
+        $.ajax({
+          url: "{% url 'get_departments' %}",
+          data: { management_id: managementId },
+          success: function(data) {
+            updateDepartmentSelect(data);
+            updateSectorSelect([]);
+          }
+        });
+      });
+
+      $("#id_department").change(function() {
+        var departmentId = $(this).val();
+        if (!departmentId) {
+          return;
+        }
+
+        $.ajax({
+          url: "{% url 'get_sectors' %}",
+          data: { department_id: departmentId },
+          success: function(data) {
+            updateSectorSelect(data);
+          }
+        });
+      });
+    });
+</script>
 {% endblock %}
 </body>
 </html>
