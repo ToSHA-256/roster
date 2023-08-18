@@ -10,98 +10,131 @@
     <link rel="stylesheet" href="{% static 'dist/scss/wrapper-form.css'%}">
     <link rel="stylesheet" href="{% static 'dist/scss/body.css'%}">
     <link rel="stylesheet" href="{% static 'dist/scss/style.css'%}">
+    <link rel="stylesheet" href="{% static 'dist/scss/form-columns.css'%}">
+    <script src="{% static 'dist/js/jquery-3.7.0.min.js' %}"></script>
+    <script src="{% static 'dist/js/employee_form.js' %}"></script>
 </head>
 <body>
 {% block content %}
- <div class="courses-filter-wrapper">
-    <div id="employee-form">
-      <form method="POST">
-        {% csrf_token %}
-        <select class="form__input" id="id_management" name="management">
-          <option value="" selected disabled>Выберите управление</option>
-           {% for management in management_choices %}
-            <option value="{{ management.id }}">{{ management }}</option>
-            {% endfor %}
-        </select>
 
-        <select class="form__input" id="id_department" name="department">
-          <option value="" selected disabled>Выберите отдел</option>
-        </select>
+<div class="blank-global-container" style="background-image: url();">
+    <div class="wrapper-blank"
+         style="padding-top: 20px;margin-top: 20px;box-shadow: 0px 0.6rem 0.6rem rgba(0,0,0,0.1) !important;">
 
-        <select class="form__input" id="id_sector" name="sector">
-          <option value="" selected disabled>Выберите сектор</option>
-        </select>
+        <form method="POST" action="{% url 'create_employee' %}">
+            {% csrf_token %}
 
-        <button type="submit" class="btn">Добавить сотрудника</button>
-      </form>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="message">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-columns">
+                <div class="form-group">
+                    <label for="surname">Фамилия:</label>
+                    <input type="text" id="surname" name="surname" required>
+                    {% if form.surname.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.surname.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" required>
+                    {% if form.name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.name.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="patronymic">Отчество:</label>
+                    <input type="text" id="patronymic" name="patronymic" required>
+                    {% if form.patronymic.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.patronymic.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="date_of_birth">Дата рождения:</label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" required>
+                    {% if form.date_of_birth.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.date_of_birth.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-columns">
+                <div class="form-group">
+                    <select class="form__input" id="status" name="status" required>
+                        <option value="" selected disabled>Выберите статус</option>
+                        <option value="military">Военнослужащий</option>
+                        <option value="civil">Госслужащий</option>
+                    </select>
+                    {% if form.status.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.status.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <select class="form__input" id="gender" name="gender" required>
+                        <option value="" selected disabled>Выберите пол</option>
+                        <option value="M">Мужской</option>
+                        <option value="F">Женский</option>
+                    </select>
+                    {% if form.gender.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.gender.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <select class="form__input" id="id_management" name="management"
+                            data-get-departments-url="{% url 'get_departments' %}">
+                        <option value="" selected disabled>Выберите управление</option>
+                        {% for management in management_choices %}
+                        <option value="{{ management.id }}">{{ management }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form__input" id="id_department" name="department"
+                            data-get-sectors-url="{% url 'get_sectors' %}">
+                        <option value="" selected disabled>Выберите отдел</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form__input" id="id_sector" name="sector">
+                        <option value="" selected disabled>Выберите сектор</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn">Создать сотрудника</button>
+            </div>
+        </form>
     </div>
-  </div>
-    <script src="{% static 'dist/js/jquery-3.7.0.min.js' %}"></script>
+</div>
 
-  <script>
-   $(document).ready(function() {
-      function updateDepartmentSelect(departments) {
-        var departmentSelect = $("#id_department");
-        departmentSelect.empty();
-        departmentSelect.append($('<option>', {
-          value: "",
-          text: "Выберите отдел",
-          selected: true,
-          disabled: true
-        }));
-        departments.forEach(function(dep) {
-          departmentSelect.append($('<option>', {
-            value: dep.id,
-            text: dep.name + " отдел"
-          }));
-        });
-      }
-
-      function updateSectorSelect(sectors) {
-        var sectorSelect = $("#id_sector");
-        sectorSelect.empty();
-        sectorSelect.append($('<option>', {
-          value: "",
-          text: "Выберите сектор",
-          selected: true,
-          disabled: true
-        }));
-        sectors.forEach(function(sec) {
-          sectorSelect.append($('<option>', {
-            value: sec.id,
-            text: sec.name + " сектор"
-          }));
-        });
-      }
-
-      $("#id_management").change(function() {
-        var managementId = $(this).val();
-        $.ajax({
-          url: "{% url 'get_departments' %}",
-          data: { management_id: managementId },
-          success: function(data) {
-            updateDepartmentSelect(data);
-            updateSectorSelect([]);
-          }
-        });
-      });
-
-      $("#id_department").change(function() {
-        var departmentId = $(this).val();
-        if (!departmentId) {
-          return;
-        }
-
-        $.ajax({
-          url: "{% url 'get_sectors' %}",
-          data: { department_id: departmentId },
-          success: function(data) {
-            updateSectorSelect(data);
-          }
-        });
-      });
-    });
-</script>
 {% endblock %}
 </body>
 </html>
