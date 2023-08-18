@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Form</title>
+    <link rel="stylesheet" href="{% static 'dist/scss/wrapper-form.css'%}">
+    <link rel="stylesheet" href="{% static 'dist/scss/body.css'%}">
+</head>
+<body>
+{% block content %}
+  <div id="employee-form">
+    <form method="POST">
+      {% csrf_token %}
+      <label for="id_management">Управление:</label>
+      {{ form.management }}
+      <label for="id_department">Отдел:</label>
+      {{ form.department }}
+      <label for="id_sector">Сектор:</label>
+      {{ form.sector }}
+      <button type="submit">Добавить сотрудника</button>
+    </form>
+  </div>
+    <script src="{% static 'dist/js/jquery-3.7.0.min.js' %}"></script>
+
+  <script>
+   $(document).ready(function() {
+  $("#id_management").change(function() {
+    var managementId = $(this).val();
+    $.ajax({
+      url: "{% url 'get_departments' %}",
+      data: { management_id: managementId },
+      success: function(data) {
+        var departmentSelect = $("#id_department");
+        departmentSelect.empty();  // Очищаем поле выбора отдела
+        data.forEach(function(dep) {
+          departmentSelect.append($('<option>', {
+            value: dep.id,
+            text: dep.name
+          }));
+        });
+      }
+    });
+  });
+
+  $("#id_department").change(function() {
+    var departmentId = $(this).val();
+    $.ajax({
+      url: "{% url 'get_sectors' %}",
+      data: { department_id: departmentId },
+      success: function(data) {
+        var sectorSelect = $("#id_sector");
+        sectorSelect.empty();  // Очищаем поле выбора сектора
+        data.forEach(function(sec) {
+          sectorSelect.append($('<option>', {
+            value: sec.id,
+            text: sec.name
+          }));
+        });
+      }
+    });
+  });
+});
+
+  </script>
+{% endblock %}
+</body>
+</html>
