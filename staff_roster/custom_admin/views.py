@@ -28,16 +28,25 @@ def get_sectors(request):
     return JsonResponse(data, safe=False)
 
 
-
 @csrf_exempt
 def create_employee(request):
     if request.method == "POST":
         form = EmployeeForm(request.POST)
+
         if form.is_valid():
-            form.save()
-            messages.success(request, "Сотрудник успешно добавлен")
+            employee = form.save(commit=False)
+
+            is_manager_office = request.POST.get("is_manager_office")
+            if is_manager_office == "true":
+                employee.is_manager_office = True
+                employee.sector = None
+
+            employee.save()
+
+            messages.success(request, f'{employee} добавлен!')
         else:
             messages.error(request, "Произошла ошибка при добавлении сотрудника")
+
         return redirect('employee_form')  # Перенаправляем на страницу с формой
     else:
         return JsonResponse({"error": "Недопустимый метод запроса"}, status=405)

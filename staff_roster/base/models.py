@@ -1,8 +1,14 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 
 class Management(models.Model):
-    name = models.CharField(max_length=100)
+    numeric_name_validator = RegexValidator(
+        regex=r'^\d+$',
+        message='Название должно содержать только цифры.',
+        code='invalid_numeric_name'
+    )
+    name = models.CharField(max_length=2, validators=[numeric_name_validator], unique=True)
 
     def __str__(self):
         return f'{self.name} управление'
@@ -12,9 +18,20 @@ class Management(models.Model):
         verbose_name_plural = 'Управления'
 
 
+
 class Department(models.Model):
-    name = models.CharField(max_length=100)
+    numeric_name_validator = RegexValidator(
+        regex=r'^\d+$',
+        message='Название должно содержать только цифры.',
+        code='invalid_numeric_name'
+    )
+    name = models.CharField(max_length=2, validators=[numeric_name_validator])
     management = models.ForeignKey(Management, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('name', 'management')
+        verbose_name = 'Отдел'
+        verbose_name_plural = 'Отделы'
 
     def __str__(self):
         return f'{self.name} отдел {self.management}'
@@ -25,7 +42,12 @@ class Department(models.Model):
 
 
 class Sector(models.Model):
-    name = models.CharField(max_length=100)
+    numeric_name_validator = RegexValidator(
+        regex=r'^\d+$',
+        message='Название должно содержать только цифры.',
+        code='invalid_numeric_name'
+    )
+    name = models.CharField(max_length=2, validators=[numeric_name_validator], unique=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -45,15 +67,20 @@ class Employee(models.Model):
         ('military', 'Военнослужащий'),
         ('civil', 'Госслужащий'),
     ]
-    surname = models.CharField(max_length=100,default=None)
-    name = models.CharField(max_length=100,default=None)
-    patronymic = models.CharField(max_length=100,default=None)
-    status = models.CharField(max_length=8, choices=STATUS_CHOICES,default='military')
+    surname = models.CharField(max_length=100, default=None)
+    name = models.CharField(max_length=100, default=None)
+    patronymic = models.CharField(max_length=100, default=None)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='military')
     date_of_birth = models.DateField(default='2000-01-01')
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default='M')
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='employees',default=None)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name='employees',default=None)
-    management = models.ForeignKey(Management, on_delete=models.CASCADE, related_name='employees',default=None)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='employees', default=None,
+                                   null=True, blank=True)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name='employees', default=None, null=True,
+                               blank=True)
+    management = models.ForeignKey(Management, on_delete=models.CASCADE, related_name='employees', default=None,
+                                   null=True, blank=True)
+    is_manager_office = models.BooleanField(default=False)
+    is_manager_management = models.BooleanField(default=False)
 
     def __str__(self):
         initials = f'{self.surname} {self.name[0]}.{self.patronymic[0]}.'

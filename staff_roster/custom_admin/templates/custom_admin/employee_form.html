@@ -108,6 +108,10 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
+                    <label for="is_manager_office">Добавить в качестве начальника управления?</label>
+                    <input type="checkbox" id="is_manager_office" name="is_manager_office" value="true">
+                </div>
+                <div class="form-group">
                     <select class="form__input" id="id_management" name="management"
                             data-get-departments-url="{% url 'get_departments' %}">
                         <option value="" selected disabled>Выберите управление</option>
@@ -134,7 +138,7 @@
         </form>
     </div>
 </div>
-
 {% endblock %}
 </body>
+
 </html>
