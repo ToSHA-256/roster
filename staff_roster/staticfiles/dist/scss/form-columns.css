@@ -1,0 +1,27 @@
+/* form-columns.css */
+
+/* Разделение на две колонки */
+.form-columns {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    width: calc(50% - 20px);
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    display: flex; /* Добавьте display: flex */
+    flex-direction: column; /* Определите направление колонки */
+}
+
+/* Опционально: Стиль для select элементов */
+.form__input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+}
