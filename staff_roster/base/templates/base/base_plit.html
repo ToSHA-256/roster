@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Default Title{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'dist/scss/base_plit.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dist/scss/form_container.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dist/scss/table.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dist/scss/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .toggle-list {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+<div class="content">
+    {% block content %}
+    <!-- Default content goes here -->
+    {% endblock %}
+</div>
+{% block scripts %}
+<!-- Additional scripts go here -->
+{% endblock %}
+</body>
+</html>

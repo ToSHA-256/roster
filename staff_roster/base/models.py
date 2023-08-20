@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from registration.models import CustomUser
 
 
 class Management(models.Model):
@@ -18,7 +19,6 @@ class Management(models.Model):
         verbose_name_plural = 'Управления'
 
 
-
 class Department(models.Model):
     numeric_name_validator = RegexValidator(
         regex=r'^\d+$',
@@ -29,7 +29,6 @@ class Department(models.Model):
     management = models.ForeignKey(Management, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('name', 'management')
         verbose_name = 'Отдел'
         verbose_name_plural = 'Отделы'
 
@@ -83,6 +82,8 @@ class Employee(models.Model):
     is_manager_management = models.BooleanField(default=False)
 
     is_user = models.BooleanField(default=False)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='employees', default=None,
+                             null=True, blank=True)
 
     def __str__(self):
         initials = f'{self.surname} {self.name[0]}.{self.patronymic[0]}.'

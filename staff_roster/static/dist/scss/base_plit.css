@@ -1,0 +1,246 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Align content both horizontally and vertically */
+    min-height: 100vh;
+    font-size: 1.4vw; /* Use vw (viewport width) for font size */
+}
+
+/* Styles for the left-side navigation panel */
+.navigation {
+    top: 0;
+    position: fixed;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: row; /* Change flex-direction to row */
+    justify-content: center; /* Center content horizontally */
+    align-items: center;
+    background-color: #4CAF50;
+    color: white;
+    padding: 1vw; /* Use vw (viewport width) for padding */
+    height: 8vh;
+    width: 40vw; /* Set width to 70% of the viewport width */
+    border-radius: 10px; /* Add border radius for smoothing the corners */
+}
+
+.navigation a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 160%; /* Set height to 100% to take full height of the navigation panel */
+    width: 25%; /* Set width to 15% for each link to evenly distribute them */
+    color: white;
+    transition: background-color 0.3s, font-size 0.3s;
+}
+
+.navigation a span {
+    color: white;
+    padding: 0.5vw 1vw; /* Use vw (viewport width) for padding */
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+/* Additional styles for the tooltip */
+.tooltip {
+    visibility: hidden;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0.5vw;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -2.5vw; /* Use vw (viewport width) for margin */
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.3s;
+}
+
+/* Display the tooltip on hover */
+.navigation a:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Additional styles for the content area */
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-left: 20%;
+    margin-top: 2.5vh; /* Use vh (viewport height) for margin */
+    margin-right: 2vw; /* Use vw (viewport width) for margin */
+}
+
+.management-list {
+    width: 30%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(3, 1fr); /* Create three equal columns */
+    gap: 1vw; /* Use vw (viewport width) for gap between grid items */
+}
+
+.employee-list-container {
+    flex-grow: 1;
+    margin-left: 2vw; /* Use vw (viewport width) for margin */
+}
+
+/* Styles for the links inside .management-list li and .employee-list-container li */
+.management-list li,
+.employee-list-container li {
+    list-style: none;
+    margin-left: 0;
+}
+
+.management-list li a,
+.employee-list-container li a {
+    text-decoration: none;
+    color: inherit;
+    font-size: inherit;
+    display: inline-block;
+    padding: 1vw; /* Use vw (viewport width) for padding */
+    border: 1px solid #ccc; /* Add border for each grid item */
+    border-radius: 5px; /* Add border radius for smoothing the corners */
+    position: relative;
+}
+
+/* Add green dots using pseudo-elements */
+.management-list li a::before,
+.employee-list-container li a::before {
+    content: "";
+    width: 1vw; /* Use vw (viewport width) for width */
+    height: 1vw; /* Use vw (viewport width) for height */
+    border-radius: 50%;
+    background-color: #4CAF50;
+    position: absolute;
+    left: 0.5vw; /* Use vw (viewport width) for margin */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Additional styles for the active link */
+.management-list li a.active,
+.employee-list-container li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Additional styles for link on hover */
+.management-list li a:hover,
+.employee-list-container li a:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Additional styles for the icon-square class */
+.icon-square {
+    width: 6vw; /* Use vw (viewport width) for width */
+    height: 3vw; /* Use vw (viewport width) for height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 1vw; /* Use vw (viewport width) for margin */
+    transition: transform 0.3s;
+}
+
+/* Styles for the icon images inside the icon-square */
+.icon-square img {
+    max-width: 6vw; /* Use vw (viewport width) for max-width */
+    max-height: 6vw; /* Use vw (viewport width) for max-height */
+}
+
+/* Scale up the icon width on hover */
+.icon-square:hover {
+    transform: scaleX(1.1);
+}
+
+
+
+.management-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    gap: 1vw;
+    margin-top: 15vh;
+    width: 100%; /* Make sure the grid takes up the full width of the container */
+}
+
+.management-tile {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1vw;
+    background-color: #e0f2e0;
+    transition: background-color 0.3s;
+
+
+}
+
+.management-tile a {
+    text-decoration: none;
+    color: inherit;
+    font-size: inherit;
+    display: block;
+    text-align: center;
+    width: 100%; /* Make the entire tile a link */
+    height: 100%; /* Make the entire tile a link */
+
+
+}
+
+/* Change background color on hover */
+.management-tile:hover {
+    background-color: #4CAF50;
+}
+
+.management-tile a:hover {
+    color: white;
+}
+
+/* Remove underline from link */
+.management-tile a:link,
+.management-tile a:visited {
+    text-decoration: none;
+}
+/* Выше всё отлично! */
+/* Additional styles for the content area */
+.management-tile {
+    /* ... остальные стили ... */
+    position: relative;
+    text-align: center;
+    overflow: hidden; /* Обрезаем содержимое, чтобы цифра не выходила за границы плитки */
+}
+
+.management-tile a {
+    /* ... остальные стили ... */
+    color: green; /* Зеленый цвет текста */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vw; /* Начальный размер текста (в зависимости от размера панели) */
+    transition: font-size 0.3s; /* Плавное изменение размера шрифта */
+}
+
+/* Увеличиваем размер текста при наведении */
+.management-tile:hover a {
+    font-size: 4vw; /* Увеличенный размер текста при наведении (в зависимости от размера панели) */
+}
+
+/* Дополняем */
