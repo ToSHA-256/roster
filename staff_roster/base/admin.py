@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 from base.models import Management, Sector, Department, Employee
+from registration.models import CustomUser
 
 
 class EmployeeAdminForm(forms.ModelForm):
@@ -41,3 +42,4 @@ admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Management)
 admin.site.register(Department)
 admin.site.register(Sector)
+admin.site.register(CustomUser)

@@ -82,6 +82,8 @@ class Employee(models.Model):
     is_manager_office = models.BooleanField(default=False)
     is_manager_management = models.BooleanField(default=False)
 
+    is_user = models.BooleanField(default=False)
+
     def __str__(self):
         initials = f'{self.surname} {self.name[0]}.{self.patronymic[0]}.'
         return initials
