@@ -1,0 +1,43 @@
+<!-- management_list.html -->
+{% extends "base/base_plit.html" %}
+{% load static %}
+
+{% block title %}
+Список управлений
+{% endblock %}
+
+{% block content %}
+
+<script src="{% static 'dist/js/jquery-3.7.0.min.js' %}"></script>
+
+<div class="management-list">
+    {% for management in managements %}
+    <div class="management-tile">
+        <a href="{% url 'department_list' management.id %}">
+            {{ management.name }} Управление
+        </a>
+    </div>
+    {% endfor %}
+    {% if request.user.is_superuser %}
+    <div class="management-tile">
+       <a href="#" class="add-link" data-modal-id="#add-modal" data-add-url="{% url 'management_add_view' %}">
+            +
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Custom Modal -->
+<div id="add-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="add-content"></div>
+    </div>
+</div>
+
+
+
+{% block scripts %}
+<script src="{% static 'mainpage/js/modal_add.js' %}"></script>
+{% endblock %}
+{% endblock %}

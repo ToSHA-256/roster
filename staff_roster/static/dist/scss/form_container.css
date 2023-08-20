@@ -1,0 +1,53 @@
+/* Styles for the form container */
+.form-container {
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: left;
+}
+
+
+/* Styles for the list of managements */
+.form-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.form-container li {
+    font-size: 20px; /* Adjust font size as needed */
+    padding: 10px;
+    transition: background-color 0.0s, color 0.0s;
+    list-style: none;
+}
+
+.form-container li:hover {
+    background-color: #4CAF50; /* Salad Green color */
+    color: white;
+}
+
+/* Styles for the links in the list */
+/* Styles for the links inside .form-container li */
+.form-container li a {
+    text-decoration: none;
+    color: inherit; /* Inherit text color from the parent element */
+    font-size: inherit; /* Inherit font size from the parent element */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Additional styles to change link color and font size on hover */
+.form-container li:hover {
+    background-color: #4CAF50; /* Salad Green color */
+    color: white;
+    font-size: 24px; /* Change the font size as needed */
+}
+
+
+.form-container ul li {
+    list-style-type: none;
+}
